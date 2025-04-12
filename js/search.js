@@ -49,6 +49,7 @@ async function SearchWeather() {
         console.error('Помилка при отриманні погоди:', error);
         errorMessage.hidden = false;
         queriesCountLeft--;
+        weatherContainer.hidden = true;
     }
 }
 
