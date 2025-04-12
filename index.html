@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <script src="/js/axios.min.js"></script>
+    <title>Weather Forecast</title>
+</head>
+<body class=" p-8" style="background-color: whitesmoke; padding: 2% 20% 0 20%; align-items: center;">
+    <div class="h-full" style="border: 2px #808080; background-color: #263c8128; border-radius:10px; padding:5px; ">
+        <h1 class="text-4xl font-extrabold text-center py-5" style="margin-top:2%">Search weather</h1>
+
+        <div class="fixed left-1 z-20 transform ">
+            <div class="flex">
+                <div id="time"
+                     class="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none block flex-1 w-full text-sm border-gray-300 p-2.5">
+                    01:00
+                </div>
+                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md">
+                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </div>
+            <h1 id="queriesRemain" class="fixed top-20 text-m font-bold py-5 px-4 border-2 text-gray-500 border-gray-200 rounded-lg bg-white mt-16" style="margin-top:10px"> </h1>
+        </div>
+        <div class="inline-flex gap-12 " style="align-items:center; display:flex;justify-content:center; margin-top:2%">
+            <div>
+                <button style="min-width: 200px; align-items: center; display: flex; justify-content: center" id="dropdownCountriesButton" data-iso="random" data-dropdown-toggle="dropdownCountries"
+                        class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center "
+                        type="button">
+                    Countries
+
+                </button>
+                <div id="dropdownCountries" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
+                    <input type="text" id="searchInputCountry" class="w-full px-4 py-2 border-b-2 border-gray-300 focus:outline-none " placeholder="Search...">
+
+                    <ul id="listCountries" class="py-2 text-sm text-gray-700 max-h-16 overflow-y-auto">
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <button style="min-width: 200px; align-items: center; display: flex; justify-content: center" id="dropdownCitiesButton" data-dropdown-toggle="dropdownCities"
+                        class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center "
+                        type="button">
+                    Cities
+
+                </button>
+                <div id="dropdownCities" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
+                    <input type="text" id="searchInputCity" class="w-full px-4 py-2 border-b-2 border-gray-300 focus:outline-none " placeholder="Search...">
+
+                    <ul id="listCities" class="py-2 text-sm text-gray-700 max-h-16 overflow-y-auto">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="py-5" style="align-items:center; display:flex;justify-content:center">
+            <button type="button" id="searchButton" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Search</button>
+
+        </div>
+        <div class="py-5" style="align-items:center; display:flex;justify-content:center">
+            <h1 hidden id="errorMessage" class="text-4xl font-extrabold text-center py-5">Weather in the city not found</h1>
+        </div>
+
+        <div id="weatherContainer" hidden class="max-w-2xl mx-auto my-12 p-6 bg-white rounded-lg shadow-lg">
+
+
+            <h1 class="text-4xl font-bold text-center text-gray-800 mb-4" id="cityName"></h1>
+
+
+            <div class="flex justify-center mb-4">
+                <img src="https://openweathermap.org/img/wn/10d.png" id="weatherImage" class="w-24 h-24 ">
+            </div>
+
+
+            <p class="text-center text-lg text-gray-600 mb-6" id="weatherDescription"></p>
+
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+
+                <div class="flex justify-center items-center text-center">
+                    <div>
+                        <p class="text-xl font-semibold text-gray-800">Min Temp</p>
+                        <p class="text-lg text-gray-600" id="minTemp"></p>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-center items-center text-center">
+                    <div>
+                        <p class="text-xl font-semibold text-gray-800">Max Temp</p>
+                        <p class="text-lg text-gray-600" id="maxTemp"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p class="text-xl font-semibold text-gray-800">Feels like</p>
+                <p class="text-lg text-gray-600" id="feelsLike"></p>
+            </div>
+
+            <div class="text-center">
+                <p class="text-xl font-semibold text-gray-800">Wind Speed</p>
+                <p class="text-lg text-gray-600" id="windSpeed"></p>
+            </div>
+
+        </div>
+    </div>
+    
+
+    <script src="/js/countries.js"></script>
+    <script src="/js/cities.js"></script>
+    <script src="/js/search.js"></script>
+
+</body>
+
+</html>
